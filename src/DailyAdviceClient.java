@@ -8,11 +8,11 @@ import java.net.Socket;
 public class DailyAdviceClient {
     public void go() {
         try {
-            Socket s = new Socket("127.0.0.1", 4242);
+            Socket s = new Socket("87.236.11.34", 4242);
             InputStreamReader streamReader = new InputStreamReader(s.getInputStream());
             BufferedReader reader = new BufferedReader(streamReader);
             String advice = reader.readLine();
-            System.out.println("Отправка пинга");
+            System.out.println("Today is good day for: " + advice);
             reader.close();
         } catch (Exception e) {
             e.printStackTrace();
