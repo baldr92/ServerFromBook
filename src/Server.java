@@ -7,27 +7,40 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-    public void go() {
+
+    public static void main(String[] args) throws InterruptedException  {
         try {
             ServerSocket serverSocket = new ServerSocket(4242);
             Socket client = serverSocket.accept();
             System.out.println("Connection was accepted");
             DataOutputStream out = new DataOutputStream(client.getOutputStream());
-            System.out.println("DataOutputStream created");
             DataInputStream in = new DataInputStream(client.getInputStream());
             System.out.println("DataInputStream created");
-            while (true){
+            while (!client.isClosed()){
                 System.out.println("System is ready for getting data");
                 String entry = in.readUTF();
-                System.out.println("Read from Client message:" + entry);
+                System.out.println("Read message from Client :" + entry);
+
+
+                // инициализация проверки условия продолжения работы с клиентом по этому сокету по кодовому слову
+                //       - quit
+                if(entry.equalsIgnoreCase("quit")) {
+                    System.out.println("Ending of work");
+                    out.writeUTF("Server reply" + entry);
+                    out.flush();
+                    Thread.sleep(3000);
+                    break;
+                }
+                out.writeUTF(entry);
+                out.flush();
             }
+            out.close();
+            in.close();
+            client.close();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Something went wrong");
         }
     }
-    public static void main(String[] args) {
-        Server server = new Server();
-        server.go();
-    }
+
 }
