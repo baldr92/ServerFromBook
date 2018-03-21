@@ -3,12 +3,12 @@ import java.net.Socket;
 
 
 public class Client {
-    public void go() throws InterruptedException {
+    public static void main(String args[]) throws InterruptedException {
         try {
             Socket socket = new Socket("127.0.0.1", 4242);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
-            while (socket.isOutputShutdown()) {
+            while (!socket.isOutputShutdown()) {
 
                 if (bufferedReader.ready()) {
                     System.out.println("Client starts to writing in channel");
@@ -17,7 +17,7 @@ public class Client {
 
                     outputStream.writeUTF(text);
                     outputStream.flush();
-                    System.out.println("Your message" + text +"has been sent");
+                    System.out.println("Your message " + text +"  has been sent");
                     Thread.sleep(1000);
 
                 }
@@ -28,8 +28,5 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) throws InterruptedException {
-        Client client = new Client();
-        client.go();
+
     }
-}
