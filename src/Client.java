@@ -27,6 +27,4 @@ public class Client {
             System.out.println("Something went wrong");
         }
     }
-
-
     }
